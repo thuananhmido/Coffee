@@ -26,52 +26,53 @@ class CartPage extends StatelessWidget {
         ),
         Expanded(
             child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                Container(
-                  height: 200,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Gía của sản phẩm này",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    " $price\VNĐ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Row(
                     children: [
                       Text(
-                        name,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "burger bhout acha hain",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        "\$ $price",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "$quantity",
-                            style: TextStyle(fontSize: 20, color: Colors.black),
-                          )
-                        ],
+                        "$quantity",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
                       )
                     ],
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.close, color: Colors.black),
-                  onPressed: onTap,
-                )
-              ],
-            )),
+                  )
+                ],
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.close, color: Colors.white),
+              onPressed: onTap,
+            )
+          ],
+        )),
       ],
     );
   }
+
   Widget build(BuildContext context) {
     CFProvider provider = Provider.of<CFProvider>(context);
     int total = provider.totalprice();
@@ -86,13 +87,13 @@ class CartPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "\$ $total",
-              style: TextStyle(color: Colors.black, fontSize: 30),
+              " $total\VNĐ",
+              style: TextStyle(color: Colors.white, fontSize: 30),
             ),
             Text(
-              "Check Out",
+              "Thanh toán",
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
             )
@@ -116,7 +117,7 @@ class CartPage extends StatelessWidget {
         itemBuilder: (ctx, index) {
           provider.getDeleteIndex(index);
           return cartItem(
-            onTap: (){
+            onTap: () {
               provider.delete();
             },
             image: provider.cartList[index].image,

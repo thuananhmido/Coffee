@@ -1,4 +1,6 @@
+import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
 import 'package:CoffeeAppUI/Screens/Login.dart';
+import 'package:CoffeeAppUI/Screens/Profile.dart';
 import 'package:CoffeeAppUI/fire_base/Start.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
@@ -54,17 +56,18 @@ class _HomePageState extends State<HomePage> {
     this.checkAuthentification();
     this.getUser();
   }
+//The list of userModels from FireStore
 
   @override
   Widget build(BuildContext context) {
     CFProvider provider = Provider.of<CFProvider>(context);
+
     //////////////single food list/////////
     provider.getCFList();
     singleFoodList = provider.throwCFList;
     return Scaffold(
         drawer: Drawer(
           child: ListView(
-
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
@@ -80,9 +83,25 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.contacts), title: Text(" Giỏ Hàng"),
+                leading: Icon(Icons.contacts),
+                title: Text(" Giỏ Hàng"),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CartPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.contacts),
+                title: Text(" Profile"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddData()),
+                  );
                 },
               ),
             ],
@@ -103,80 +122,79 @@ class _HomePageState extends State<HomePage> {
           child: !isloggedin
               ? CircularProgressIndicator()
               : Column(
-            children: <Widget>[
-              SizedBox(height :20),
-               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: "Search Food",
-                          hintStyle: TextStyle(color: Colors.white),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          ),
-                          filled: true,
-                          fillColor: Color(0xff3a3e3e),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10))),
-                    ),
-                  ),
-                  SizedBox(height :20),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 510,
-                    child: GridView.count(
-                        shrinkWrap: false,
-                        primary: false,
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.8,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
-                        children: singleFoodList
-                            .map(
-                              (e) => BottomContainer(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => DetailPage(
-                                    image: e.image,
-                                    name: e.name,
-                                    price: e.price,
-                                    description:e.description,
-                                  ),
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextField(
+                            decoration: InputDecoration(
+                                hintText: "Search Food",
+                                hintStyle: TextStyle(color: Colors.white),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Colors.white,
                                 ),
-                              );
-                            },
-                            image: e.image,
-                            price: e.price,
-                            name: e.name,
-                                description:e.description,
+                                filled: true,
+                                fillColor: Color(0xff3a3e3e),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10))),
                           ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          height: 510,
+                          child: GridView.count(
+                              shrinkWrap: false,
+                              primary: false,
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.8,
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20,
+                              children: singleFoodList
+                                  .map(
+                                    (e) => BottomContainer(
+                                      onTap: () {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) => DetailPage(
+                                              image: e.image,
+                                              name: e.name,
+                                              price: e.price,
+                                              description: e.description,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      image: e.image,
+                                      price: e.price,
+                                      name: e.name,
+                                      description: e.description,
+                                    ),
+                                  )
+                                  .toList()),
                         )
-                            .toList()
+                      ],
                     ),
-                  )
-                ],
-              ),
-              RaisedButton(
-                padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                onPressed: signOut,
-                child: Text('Signout',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold)),
-                color: Colors.orange,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                    RaisedButton(
+                      padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
+                      onPressed: signOut,
+                      child: Text('Signout',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold)),
+                      color: Colors.orange,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
         ));
   }
 }

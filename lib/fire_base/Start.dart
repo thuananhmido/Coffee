@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -43,12 +44,14 @@ class _StartState extends State<Start> {
   navigateToRegister() async {
     Navigator.pushReplacementNamed(context, "SignUp");
   }
+
   signOut() async {
     _auth.signOut();
 
     final googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,8 +123,6 @@ class _StartState extends State<Start> {
                     ),
                     color: Colors.orange),
                 SizedBox(width: 20.0),
-
-
               ],
             ),
             SizedBox(height: 20.0),

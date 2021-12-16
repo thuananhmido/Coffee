@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,7 +35,13 @@ class _SignUpState extends State<SignUp> {
       try {
         UserCredential user = await _auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
-        _createUser(user.user.uid, _name);
+        CollectionReference _fireStore = Firestore.instance.collection('users');
+        _fireStore.add({
+          'userName': _name,
+          'email': _email,
+          'password': _password,
+        });
+
         if (user != null) {
           await _auth.currentUser.updateProfile(displayName: _name);
         }
@@ -43,17 +50,6 @@ class _SignUpState extends State<SignUp> {
         print(e);
       }
     }
-  }
-  _createUser(String userId, String name,) {
-    var user = Map<String, String>();
-    user["name"] = name;
-    var ref = FirebaseDatabase.instance.reference().child("users");
-    ref.child(userId).set(user).then((vl) {
-      print("on value: SUCCESSED");
-    }).catchError((err) {
-    }).whenComplete(() {
-      print("completed");
-    });
   }
 
   showError(String errormessage) {
