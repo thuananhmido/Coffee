@@ -40,6 +40,7 @@ class _SignUpState extends State<SignUp> {
           'userName': _name,
           'email': _email,
           'password': _password,
+          "id": user.user.uid,
         });
 
         if (user != null) {

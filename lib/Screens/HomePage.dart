@@ -1,14 +1,12 @@
 import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
-import 'package:CoffeeAppUI/Screens/Login.dart';
-import 'package:CoffeeAppUI/Screens/Profile.dart';
-import 'package:CoffeeAppUI/fire_base/Start.dart';
+import 'package:CoffeeAppUI/Screens/profilepage.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
 import 'package:CoffeeAppUI/Screens//Cart.dart';
 import 'package:CoffeeAppUI/widgets/bottom_Container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -56,7 +54,6 @@ class _HomePageState extends State<HomePage> {
     this.checkAuthentification();
     this.getUser();
   }
-//The list of userModels from FireStore
 
   @override
   Widget build(BuildContext context) {
@@ -77,22 +74,10 @@ class _HomePageState extends State<HomePage> {
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.orange,
                   child: Text(
-                    "A",
+                    "T",
                     style: TextStyle(fontSize: 40.0),
                   ),
                 ),
-              ),
-              ListTile(
-                leading: Icon(Icons.contacts),
-                title: Text(" Giỏ Hàng"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CartPage(),
-                    ),
-                  );
-                },
               ),
               ListTile(
                 leading: Icon(Icons.contacts),
@@ -100,9 +85,14 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AddData()),
+                    MaterialPageRoute(builder: (context) => ProfilePage1()),
                   );
                 },
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text(" Đăng Xuất"),
+                onTap: () => signOut(),
               ),
             ],
           ),
@@ -111,11 +101,18 @@ class _HomePageState extends State<HomePage> {
           elevation: 0.0,
           actions: [
             Padding(
-              padding: const EdgeInsets.all(9.0),
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/logo.png'),
-              ),
-            )
+                padding: const EdgeInsets.all(9.0),
+                child: IconButton(
+                  icon: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/logo.png'),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartPage()),
+                    );
+                  },
+                ))
           ],
         ),
         body: Container(
@@ -125,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     SizedBox(height: 20),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -144,10 +141,10 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(10))),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 30),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 10),
-                          height: 510,
+                          height: 560,
                           child: GridView.count(
                               shrinkWrap: false,
                               primary: false,
@@ -180,19 +177,6 @@ class _HomePageState extends State<HomePage> {
                         )
                       ],
                     ),
-                    RaisedButton(
-                      padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
-                      onPressed: signOut,
-                      child: Text('Signout',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold)),
-                      color: Colors.orange,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    )
                   ],
                 ),
         ));

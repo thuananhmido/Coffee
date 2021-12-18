@@ -1,6 +1,7 @@
 import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/Screens//HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +10,13 @@ class DetailPage extends StatefulWidget {
   final int price;
   final String name;
   final String description;
-  DetailPage({@required this.image, @required this.name, @required this.price,  @required this.description});
+  final String idUser;
+  DetailPage(
+      {@required this.image,
+      @required this.name,
+      @required this.idUser,
+      @required this.price,
+      @required this.description});
 
   @override
   _DetailPageState createState() => _DetailPageState();

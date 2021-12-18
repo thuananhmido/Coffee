@@ -1,15 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
-class CFProvider extends ChangeNotifier{
+
+class CFProvider extends ChangeNotifier {
   List<Coffee> cfList = [];
   Coffee foodModle;
   Future<void> getCFList() async {
     List<Coffee> newCFList = [];
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection('coffee').get();
+        await FirebaseFirestore.instance.collection('coffee').get();
     querySnapshot.docs.forEach(
-          (element) {
+      (element) {
         foodModle = Coffee(
           name: element.data()['name'],
           image: element.data()['image'],
@@ -27,6 +29,16 @@ class CFProvider extends ChangeNotifier{
   get throwCFList {
     return cfList;
   }
+
+  //////////get user///////////////
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  currentUser() {
+    final User user = _firebaseAuth.currentUser;
+    final uid = user.uid.toString();
+    return uid;
+  }
+
   /////////////add to cart ////////////
   List<Coffee> cartList = [];
   List<Coffee> newCartList = [];
@@ -43,6 +55,17 @@ class CFProvider extends ChangeNotifier{
       price: price,
       quantity: quantity,
     );
+    CollectionReference _fireStore = Firestore.instance.collection('data');
+    _fireStore.add({
+      'name': name,
+      'price': price,
+      'image': image,
+      'quantity': quantity,
+      'idUser': currentUser(),
+    }).then((document) {
+      // prints the document id when data adding succeed.
+      debugPrint(document.documentID);
+    });
     newCartList.add(CartModle);
     cartList = newCartList;
   }
@@ -58,13 +81,14 @@ class CFProvider extends ChangeNotifier{
     });
     return total;
   }
+
   int deleteIndex;
-  void getDeleteIndex(int index){
-    deleteIndex=index;
+  void getDeleteIndex(int index) {
+    deleteIndex = index;
   }
-  void delete(){
+
+  void delete() {
     cartList.removeAt(deleteIndex);
     notifyListeners();
   }
 }
-
