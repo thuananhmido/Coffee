@@ -12,7 +12,7 @@ class _SignUpState extends State<SignUp> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _name, _email, _password;
+  String _name, _email, _password, _address;
 
   checkAuthentication() async {
     _auth.authStateChanges().listen((user) async {
@@ -35,14 +35,18 @@ class _SignUpState extends State<SignUp> {
       try {
         UserCredential user = await _auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
-        CollectionReference _fireStore = Firestore.instance.collection('users');
-        _fireStore.add({
-          'userName': _name,
-          'email': _email,
-          'password': _password,
+        DocumentReference _fireStore =
+            Firestore.instance.collection('users').document(user.user.uid);
+        Map<String, dynamic> students = {
+          "userName": _name,
+          "email": _email,
+          "password": _password,
           "id": user.user.uid,
+          "address": _address,
+        };
+        _fireStore.setData(students).whenComplete(() {
+          print("$_name created");
         });
-
         if (user != null) {
           await _auth.currentUser.updateProfile(displayName: _name);
         }
@@ -123,6 +127,17 @@ class _SignUpState extends State<SignUp> {
                           ),
                           obscureText: true,
                           onSaved: (input) => _password = input),
+                    ),
+                    Container(
+                      child: TextFormField(
+                          validator: (input) {
+                            if (input.isEmpty) return 'Dia Chi';
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Dia Chi',
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          onSaved: (input) => _address = input),
                     ),
                     SizedBox(height: 20),
                     RaisedButton(

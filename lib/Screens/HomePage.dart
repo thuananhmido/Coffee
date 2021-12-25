@@ -1,12 +1,15 @@
 import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
-import 'package:CoffeeAppUI/Screens/profilepage.dart';
+import 'package:CoffeeAppUI/Screens/Profile.dart';
+import 'package:CoffeeAppUI/Screens/search.dart';
+import 'package:CoffeeAppUI/Screens/test.dart';
+import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
 import 'package:CoffeeAppUI/Screens//Cart.dart';
 import 'package:CoffeeAppUI/widgets/bottom_Container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +46,6 @@ class _HomePageState extends State<HomePage> {
 
   signOut() async {
     _auth.signOut();
-
     final googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
   }
@@ -64,36 +66,45 @@ class _HomePageState extends State<HomePage> {
     singleFoodList = provider.throwCFList;
     return Scaffold(
         drawer: Drawer(
+          backgroundColor: kPrimaryLightColor,
           child: ListView(
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
-                accountName: Text("${user.displayName}"),
-                accountEmail: Text("${user.email}"),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.orange,
-                  child: Text(
-                    "T",
-                    style: TextStyle(fontSize: 40.0),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(''),
                   ),
                 ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/logo.jpg'),
+                ),
+                accountName: Text("${user.displayName}"),
+                accountEmail: Text("${user.email}"),
               ),
-              ListTile(
-                leading: Icon(Icons.contacts),
-                title: Text(" Profile"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage1()),
-                  );
-                },
+              Divider(
+                thickness: 2,
+                color: Colors.white,
               ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text(" Đăng Xuất"),
-                onTap: () => signOut(),
-              ),
+              Column(children: [
+                ListTile(
+                  leading: Icon(Icons.contacts),
+                  title: Text(" Profile"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text(" Đăng Xuất"),
+                  onTap: () => signOut(),
+                ),
+              ]),
             ],
           ),
         ),
@@ -104,7 +115,8 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(9.0),
                 child: IconButton(
                   icon: CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/logo.png'),
+                    backgroundImage:
+                        AssetImage('assets/images/shopping-cart.png'),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -125,22 +137,26 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: TextField(
-                            decoration: InputDecoration(
-                                hintText: "Search Food",
-                                hintStyle: TextStyle(color: Colors.white),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                ),
-                                filled: true,
-                                fillColor: Color(0xff3a3e3e),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(10))),
-                          ),
-                        ),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () {},
+                            )
+                            // TextField(
+                            //   decoration: InputDecoration(
+                            //       hintText: "Bạn muốn uống gì,,,",
+                            //       hintStyle: TextStyle(color: kPrimaryColor),
+                            //       prefixIcon: Icon(
+                            //         Icons.search,
+                            //         color: kPrimaryColor,
+                            //       ),
+                            //       filled: true,
+                            //       fillColor: kPrimaryLightColor,
+                            //       border: OutlineInputBorder(
+                            //           borderSide: BorderSide.none,
+                            //           borderRadius: BorderRadius.circular(10))),
+                            // ),
+                            ),
                         SizedBox(height: 30),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 10),

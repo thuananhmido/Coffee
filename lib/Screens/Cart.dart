@@ -1,4 +1,5 @@
 import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
+import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/Screens//HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,7 +58,7 @@ class _DetailPageState extends State<DetailPage> {
               padding: EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Color(0xff3a3e3e),
+                  color: kPrimaryColor.withOpacity(0.3),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10))),
@@ -67,7 +68,7 @@ class _DetailPageState extends State<DetailPage> {
                 children: [
                   Text(
                     widget.name,
-                    style: TextStyle(fontSize: 40, color: Colors.white),
+                    style: TextStyle(fontSize: 40, color: Color(0xFFFF7643)),
                   ),
                   Text(
                     "Coffee Mido Cảm Ơn Qúy Khách",
@@ -141,13 +142,13 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Text(
                     widget.description,
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.white),
                   ),
                   Container(
                     height: 55,
                     width: double.infinity,
                     child: RaisedButton(
-                      color: Color(0xff2b2b2b),
+                      color: Color(0xFFFF7643),
                       onPressed: () {
                         provider.addToCart(
                           image: widget.image,
@@ -175,7 +176,7 @@ class _DetailPageState extends State<DetailPage> {
                             width: 10,
                           ),
                           Text(
-                            "Add to Cart",
+                            "Thêm giỏ hàng",
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           )
                         ],

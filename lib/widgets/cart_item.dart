@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
 
-class BottomContainer extends StatelessWidget {
+class CartItem extends StatelessWidget {
   final String image;
   final String name;
   final int price;
-  final String description;
-  final Function onTap;
-  BottomContainer(
-      {@required this.onTap,
-      @required this.image,
+  final int quantity;
+  CartItem(
+      {@required this.image,
       @required this.price,
       @required this.name,
-      @required this.description});
+      @required this.quantity});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Color(0xFFFFECDF),
+          color: Colors.brown,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Column(
@@ -33,7 +29,7 @@ class BottomContainer extends StatelessWidget {
                   child: Text(
                     name,
                     style: TextStyle(
-                      color: Color(0xFFFF7643),
+                      color: Colors.black,
                       fontWeight: FontWeight.w700,
                       fontSize: 18,
                     ),
@@ -49,7 +45,7 @@ class BottomContainer extends StatelessWidget {
                   child: Text(
                     "$price\K",
                     style: TextStyle(
-                      color: Color(0xFFFFA53E),
+                      color: Colors.black,
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     ),

@@ -62,7 +62,7 @@ class _StartState extends State<Start> {
             Container(
               height: 400,
               child: Image(
-                image: AssetImage("assets/images/start.jpg"),
+                image: AssetImage("assets/images/welcome.jpg"),
                 fit: BoxFit.contain,
               ),
             ),

@@ -55,16 +55,28 @@ class CFProvider extends ChangeNotifier {
       price: price,
       quantity: quantity,
     );
-    CollectionReference _fireStore = Firestore.instance.collection('data');
-    _fireStore.add({
-      'name': name,
-      'price': price,
-      'image': image,
-      'quantity': quantity,
-      'idUser': currentUser(),
-    }).then((document) {
-      // prints the document id when data adding succeed.
-      debugPrint(document.documentID);
+    // CollectionReference _fireStore = Firestore.instance.collection('data');
+    // _fireStore.add({
+    //   'name': name,
+    //   'price': price,
+    //   'image': image,
+    //   'quantity': quantity,
+    //   'idUser': currentUser(),
+    // }).then((document) {
+    //   // prints the document id when data adding succeed.
+    //   debugPrint(document.documentID);
+    // });
+    DocumentReference _fireStore =
+        Firestore.instance.collection('data').document(name);
+    Map<String, dynamic> students = {
+      "name": name,
+      "price": price,
+      "image": image,
+      "quantity": quantity,
+      "idUser": currentUser(),
+    };
+    _fireStore.setData(students).whenComplete(() {
+      print("$name created");
     });
     newCartList.add(CartModle);
     cartList = newCartList;

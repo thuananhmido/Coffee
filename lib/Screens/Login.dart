@@ -44,12 +44,14 @@ class _LoginState extends State<Login> {
       }
     }
   }
+
   signOut() async {
     _auth.signOut();
 
     final googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
   }
+
   showError(String errormessage) {
     showDialog(
         context: context,
@@ -71,6 +73,7 @@ class _LoginState extends State<Login> {
   navigateToSignUp() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
   }
+
   Future<UserCredential> googleSignIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
     GoogleSignInAccount googleUser = await googleSignIn.signIn();
@@ -82,7 +85,7 @@ class _LoginState extends State<Login> {
             accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
         final UserCredential user =
-        await _auth.signInWithCredential(credential);
+            await _auth.signInWithCredential(credential);
 
         await Navigator.pushReplacementNamed(context, "/");
 
@@ -93,6 +96,7 @@ class _LoginState extends State<Login> {
     } else
       throw StateError('Sign in Aborted');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +107,7 @@ class _LoginState extends State<Login> {
             Container(
               height: 400,
               child: Image(
-                image: AssetImage("assets/images/login.jpg"),
+                image: AssetImage("assets/images/welcome.jpg"),
                 fit: BoxFit.contain,
               ),
             ),
