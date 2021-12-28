@@ -1,100 +1,206 @@
-import 'package:CoffeeAppUI/provider/searchservice.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:CoffeeAppUI/Screens/Cart.dart';
+import 'package:CoffeeAppUI/model/coffee_model.dart';
+import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class OK extends StatefulWidget {
+class SearchList extends StatefulWidget {
+  SearchList({Key key}) : super(key: key);
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _SearchListState createState() => _SearchListState();
 }
 
-class _MyHomePageState extends State<OK> {
-  var queryResultSet = [];
-  var tempSearchStore = [];
+class _SearchListState extends State<SearchList> {
+  Widget appBarTitle = Text(
+    "My Properties",
+    style: TextStyle(color: Colors.white),
+  );
+  Icon actionIcon = Icon(
+    Icons.search,
+    color: Colors.orange,
+  );
+  final key = GlobalKey<ScaffoldState>();
+  final TextEditingController _searchQuery = TextEditingController();
+  List<Coffee> _list;
+  List<Coffee> _searchList = List();
+  bool _IsSearching;
+  String _searchText = "";
+  _SearchListState() {
+    _searchQuery.addListener(() {
+      if (_searchQuery.text.isEmpty) {
+        setState(() {
+          _IsSearching = false;
+          _searchText = "";
+          _buildSearchList();
+        });
+      } else {
+        setState(() {
+          _IsSearching = true;
+          _searchText = _searchQuery.text;
+          _buildSearchList();
+        });
+      }
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    _IsSearching = false;
+    Future.delayed(Duration.zero, () {
+      this.init();
+    });
+  }
 
-  initiateSearch(value) {
-    if (value.length == 0) {
-      setState(() {
-        queryResultSet = [];
-        tempSearchStore = [];
-      });
-    }
-
-    var capitalizedValue = value.toString().toUpperCase() + value.toString();
-
-    if (queryResultSet.length == 0 && value.length == 1) {
-      SearchService().searchByName(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.documents.length; ++i) {
-          queryResultSet.add(docs.documents[i].data);
-        }
-      });
-    } else {
-      tempSearchStore = [];
-      queryResultSet.forEach((element) {
-        if (element['name'].startsWith(capitalizedValue)) {
-          setState(() {
-            tempSearchStore.add(element);
-          });
-        }
-      });
-    }
+  @override
+  Widget init() {
+    _searchList = _list;
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: Text('Firestore search'),
-        ),
-        body: ListView(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              onChanged: (val) {
-                initiateSearch(val);
-              },
-              decoration: InputDecoration(
-                  prefixIcon: IconButton(
-                    color: Colors.black,
-                    icon: Icon(Icons.arrow_back),
-                    iconSize: 20.0,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  contentPadding: EdgeInsets.only(left: 25.0),
-                  hintText: 'Search by name',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4.0))),
-            ),
+    CFProvider provider = Provider.of<CFProvider>(context);
+
+    //////////////single food list/////////
+    provider.getCFList();
+    _list = provider.throwCFList;
+    return Scaffold(
+        key: key,
+        appBar: buildBar(context),
+        body: GridView.builder(
+            itemCount: _searchList.length,
+            itemBuilder: (context, index) {
+              return Uiitem(_searchList[index]);
+            },
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            )));
+  }
+
+  List<Coffee> _buildList() {
+    return _list; //_list.map((contact) =>  Uiitem(contact)).toList();
+  }
+
+  List<Coffee> _buildSearchList() {
+    if (_searchText.isEmpty) {
+      return _searchList =
+          _list; //_list.map((contact) =>  Uiitem(contact)).toList();
+    } else {
+      _searchList = _list
+          .where((element) =>
+              element.name.toLowerCase().contains(_searchText.toLowerCase()) ||
+              element.name.toLowerCase().contains(_searchText.toLowerCase()))
+          .toList();
+      print('${_searchList.length}');
+      return _searchList; //_searchList.map((contact) =>  Uiitem(contact)).toList();
+    }
+  }
+
+  Widget buildBar(BuildContext context) {
+    return AppBar(
+        centerTitle: true,
+        title: appBarTitle,
+        iconTheme: IconThemeData(color: Colors.orange),
+        backgroundColor: Colors.black,
+        actions: <Widget>[
+          IconButton(
+            icon: actionIcon,
+            onPressed: () {
+              setState(() {
+                if (this.actionIcon.icon == Icons.search) {
+                  this.actionIcon = Icon(
+                    Icons.close,
+                    color: Colors.orange,
+                  );
+                  this.appBarTitle = TextField(
+                    controller: _searchQuery,
+                    style: TextStyle(
+                      color: Colors.orange,
+                    ),
+                    decoration: InputDecoration(
+                        hintText: "Search here..",
+                        hintStyle: TextStyle(color: Colors.white)),
+                  );
+                  _handleSearchStart();
+                } else {
+                  _handleSearchEnd();
+                }
+              });
+            },
           ),
-          SizedBox(height: 10.0),
-          GridView.count(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              crossAxisCount: 2,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
-              primary: false,
-              shrinkWrap: true,
-              children: tempSearchStore.map((element) {
-                return buildResultCard(element);
-              }).toList())
-        ]));
+        ]);
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _IsSearching = true;
+    });
+  }
+
+  void _handleSearchEnd() {
+    setState(() {
+      this.actionIcon = Icon(
+        Icons.search,
+        color: Colors.orange,
+      );
+      this.appBarTitle = Text(
+        " Tìm kiếm tại đây",
+        style: TextStyle(color: Colors.white),
+      );
+      _IsSearching = false;
+      _searchQuery.clear();
+    });
   }
 }
 
-Widget buildResultCard(data) {
-  return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      elevation: 2.0,
-      child: Container(
-          child: Center(
-              child: Text(
-        data['name'],
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 20.0,
+class Uiitem extends StatelessWidget {
+  final Coffee coffee;
+  Uiitem(this.coffee);
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.fromLTRB(5, 5, 5, 7),
+      elevation: 10.0,
+      child: InkWell(
+        splashColor: Colors.orange,
+        onTap: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => DetailPage(
+                image: coffee.image,
+                name: coffee.name,
+                price: coffee.price,
+                description: coffee.description,
+              ),
+            ),
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AspectRatio(
+                aspectRatio: 18.0 / 11.0,
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundImage: NetworkImage(coffee.image),
+                )),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 15.0, 0.0, 0.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    this.coffee.name,
+                    style: TextStyle(
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0),
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ))));
+      ),
+    );
+  }
 }
