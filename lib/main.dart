@@ -1,7 +1,6 @@
 import 'package:CoffeeAppUI/Screens/HomePage.dart';
 import 'package:CoffeeAppUI/Screens/Login.dart';
 import 'package:CoffeeAppUI/Screens/SignUp.dart';
-import 'package:CoffeeAppUI/Screens/test.dart';
 import 'package:CoffeeAppUI/fire_base/Start.dart';
 import 'package:CoffeeAppUI/provider/cart_provider.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';

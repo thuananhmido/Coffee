@@ -12,12 +12,12 @@ class SearchList extends StatefulWidget {
 
 class _SearchListState extends State<SearchList> {
   Widget appBarTitle = Text(
-    "My Properties",
+    "Search Coffee",
     style: TextStyle(color: Colors.white),
   );
   Icon actionIcon = Icon(
     Icons.search,
-    color: Colors.orange,
+    color: Colors.white,
   );
   final key = GlobalKey<ScaffoldState>();
   final TextEditingController _searchQuery = TextEditingController();
@@ -59,8 +59,6 @@ class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
     CFProvider provider = Provider.of<CFProvider>(context);
-
-    //////////////single food list/////////
     provider.getCFList();
     _list = provider.throwCFList;
     return Scaffold(
@@ -76,9 +74,9 @@ class _SearchListState extends State<SearchList> {
             )));
   }
 
-  List<Coffee> _buildList() {
-    return _list; //_list.map((contact) =>  Uiitem(contact)).toList();
-  }
+  // List<Coffee> _buildList() {
+  //   return _list; //_list.map((contact) =>  Uiitem(contact)).toList();
+  // }
 
   List<Coffee> _buildSearchList() {
     if (_searchText.isEmpty) {
@@ -87,7 +85,6 @@ class _SearchListState extends State<SearchList> {
     } else {
       _searchList = _list
           .where((element) =>
-              element.name.toLowerCase().contains(_searchText.toLowerCase()) ||
               element.name.toLowerCase().contains(_searchText.toLowerCase()))
           .toList();
       print('${_searchList.length}');
@@ -99,8 +96,8 @@ class _SearchListState extends State<SearchList> {
     return AppBar(
         centerTitle: true,
         title: appBarTitle,
-        iconTheme: IconThemeData(color: Colors.orange),
-        backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Color(0xFFFF7643),
         actions: <Widget>[
           IconButton(
             icon: actionIcon,
@@ -143,7 +140,7 @@ class _SearchListState extends State<SearchList> {
         color: Colors.orange,
       );
       this.appBarTitle = Text(
-        " Tìm kiếm tại đây",
+        " Search ",
         style: TextStyle(color: Colors.white),
       );
       _IsSearching = false;

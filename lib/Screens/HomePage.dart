@@ -1,14 +1,12 @@
 import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
 import 'package:CoffeeAppUI/Screens/Profile.dart';
-import 'package:CoffeeAppUI/Screens/search.dart';
-import 'package:CoffeeAppUI/Screens/test.dart';
+import 'package:CoffeeAppUI/Screens/SearchCF.dart';
 import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
 import 'package:CoffeeAppUI/Screens//Cart.dart';
 import 'package:CoffeeAppUI/widgets/bottom_Container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -114,14 +112,11 @@ class _HomePageState extends State<HomePage> {
             Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: IconButton(
-                  icon: CircleAvatar(
-                    backgroundImage:
-                        AssetImage('assets/images/shopping-cart.png'),
-                  ),
+                  icon: Icon(Icons.shopping_cart),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SearchList()),
+                      MaterialPageRoute(builder: (context) => CartPage()),
                     );
                   },
                 ))
@@ -137,26 +132,29 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: Icon(Icons.search),
-                              onPressed: () {},
-                            )
-                            // TextField(
-                            //   decoration: InputDecoration(
-                            //       hintText: "Bạn muốn uống gì,,,",
-                            //       hintStyle: TextStyle(color: kPrimaryColor),
-                            //       prefixIcon: Icon(
-                            //         Icons.search,
-                            //         color: kPrimaryColor,
-                            //       ),
-                            //       filled: true,
-                            //       fillColor: kPrimaryLightColor,
-                            //       border: OutlineInputBorder(
-                            //           borderSide: BorderSide.none,
-                            //           borderRadius: BorderRadius.circular(10))),
-                            // ),
-                            ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextField(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchList()),
+                              );
+                            },
+                            decoration: InputDecoration(
+                                hintText: "Bạn muốn uống gì,,,",
+                                hintStyle: TextStyle(color: kPrimaryColor),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: kPrimaryColor,
+                                ),
+                                filled: true,
+                                fillColor: kPrimaryLightColor,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10))),
+                          ),
+                        ),
                         SizedBox(height: 30),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 10),
