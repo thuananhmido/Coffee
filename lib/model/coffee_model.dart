@@ -5,8 +5,10 @@ class Coffee {
   int price;
   int quantity;
   String idUser;
+  String switchvalue;
 
   Coffee({
+    this.switchvalue,
     this.description,
     this.image,
     this.name,

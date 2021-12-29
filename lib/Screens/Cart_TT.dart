@@ -15,6 +15,7 @@ class CartPage extends StatelessWidget {
     @required Function onTap,
     @required int quantity,
     @required int id,
+    @required String switchvalue,
   }) {
     return Row(
       children: [
@@ -42,7 +43,7 @@ class CartPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                name,
+                "$name",
                 style: TextStyle(color: Colors.black, fontSize: 16),
                 maxLines: 2,
               ),
@@ -54,7 +55,7 @@ class CartPage extends StatelessWidget {
                       fontWeight: FontWeight.w600, color: kPrimaryColor),
                   children: [
                     TextSpan(
-                      text: " x$quantity",
+                      text: "x $quantity x $switchvalue ",
                     ),
                   ],
                 ),
@@ -114,7 +115,7 @@ class CartPage extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    "Thanh Toán ",
+                    "Tiếp Tục ",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   )
                 ],
@@ -149,6 +150,7 @@ class CartPage extends StatelessWidget {
             name: provider.cartList[index].name,
             price: provider.cartList[index].price,
             quantity: provider.cartList[index].quantity,
+            switchvalue: provider.cartList[index].switchvalue,
           );
         },
       ),

@@ -48,12 +48,14 @@ class CFProvider extends ChangeNotifier {
     @required String name,
     @required int price,
     @required int quantity,
+    @required String switchvalue,
   }) {
     CartModle = Coffee(
       image: image,
       name: name,
       price: price,
       quantity: quantity,
+      switchvalue: switchvalue,
     );
     // CollectionReference _fireStore = Firestore.instance.collection('data');
     // _fireStore.add({
@@ -74,6 +76,7 @@ class CFProvider extends ChangeNotifier {
       "image": image,
       "quantity": quantity,
       "idUser": currentUser(),
+      "switchvalue": switchvalue,
     };
     _fireStore.setData(students).whenComplete(() {
       print("$name created");

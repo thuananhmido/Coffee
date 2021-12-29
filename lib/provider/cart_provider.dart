@@ -20,6 +20,7 @@ class CartProvider extends ChangeNotifier {
           image: element.data()['image'],
           price: element.data()['price'],
           quantity: element.data()['quantity'],
+          switchvalue: element.data()['switchvalue'],
         );
         newCartList.add(cartModle);
       },

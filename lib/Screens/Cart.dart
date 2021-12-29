@@ -3,6 +3,7 @@ import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/Screens//HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,12 +13,13 @@ class DetailPage extends StatefulWidget {
   final String name;
   final String description;
   final String idUser;
-  DetailPage(
-      {@required this.image,
-      @required this.name,
-      @required this.idUser,
-      @required this.price,
-      @required this.description});
+  DetailPage({
+    @required this.image,
+    @required this.name,
+    @required this.idUser,
+    @required this.price,
+    @required this.description,
+  });
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -25,9 +27,19 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   int quantity = 1;
+  bool switchvalue = true;
+  getSW() {
+    if (switchvalue == true) {
+      return "L";
+    } else {
+      return "S";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     CFProvider provider = Provider.of<CFProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -133,6 +145,35 @@ class _DetailPageState extends State<DetailPage> {
                       )
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "S",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 40,
+                        ),
+                      ),
+                      CupertinoSwitch(
+                        trackColor: Colors.black,
+                        value: switchvalue,
+                        activeColor: Colors.red,
+                        onChanged: (value) {
+                          setState(() {
+                            switchvalue = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        "L",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 40,
+                        ),
+                      ),
+                    ],
+                  ),
                   Text(
                     "Review ",
                     style: TextStyle(
@@ -155,6 +196,7 @@ class _DetailPageState extends State<DetailPage> {
                           name: widget.name,
                           price: widget.price,
                           quantity: quantity,
+                          switchvalue: getSW(),
                         );
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
