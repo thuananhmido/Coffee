@@ -22,20 +22,28 @@ class _ProfilePageState extends State<ProfilePage> {
   update() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      updatepass() {
+        final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+        User currentUser1 = firebaseAuth.currentUser;
+        currentUser1.updatePassword("$_password").catchError((err) {
+          // An error has occured.
+        });
+      }
 
       try {
         DocumentReference _fireStore =
             Firestore.instance.collection('users').document(currentUser());
         Map<String, dynamic> students = {
           "userName": _name,
-          "email": _email,
-          "password": _password,
+          // "email": _email,
           "address": _address,
+          "password": _password,
           "id": currentUser(),
         };
         _fireStore.update(students).whenComplete(() {
           print("$_name updated");
         });
+        updatepass();
       } catch (e) {
         //todo
       }
@@ -171,32 +179,32 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
 
                       // About me
-                      new Container(
-                        child: new Text(
-                          'Email',
-                          style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                              color: kPrimaryColor),
-                        ),
-                        margin: new EdgeInsets.only(
-                            left: 10.0, top: 30.0, bottom: 5.0),
-                      ),
-                      new Container(
-                        child: new TextFormField(
-                          validator: (input) {
-                            if (input.isEmpty) return document['email'];
-                          },
-                          decoration: new InputDecoration(
-                              hintText: document['email'],
-                              border: new UnderlineInputBorder(),
-                              contentPadding: new EdgeInsets.all(5.0),
-                              hintStyle: new TextStyle(color: Colors.grey)),
-                          onSaved: (input) => _email = input,
-                          keyboardType: TextInputType.number,
-                        ),
-                        margin: new EdgeInsets.only(left: 30.0, right: 30.0),
-                      ),
+                      // new Container(
+                      //   child: new Text(
+                      //     'Email',
+                      //     style: new TextStyle(
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: 18.0,
+                      //         color: kPrimaryColor),
+                      //   ),
+                      //   margin: new EdgeInsets.only(
+                      //       left: 10.0, top: 30.0, bottom: 5.0),
+                      // ),
+                      // new Container(
+                      //   child: new TextFormField(
+                      //     validator: (input) {
+                      //       if (input.isEmpty) return document['email'];
+                      //     },
+                      //     decoration: new InputDecoration(
+                      //         hintText: document['email'],
+                      //         border: new UnderlineInputBorder(),
+                      //         contentPadding: new EdgeInsets.all(5.0),
+                      //         hintStyle: new TextStyle(color: Colors.grey)),
+                      //     onSaved: (input) => _email = input,
+                      //     keyboardType: TextInputType.number,
+                      //   ),
+                      //   margin: new EdgeInsets.only(left: 30.0, right: 30.0),
+                      // ),
                       Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(

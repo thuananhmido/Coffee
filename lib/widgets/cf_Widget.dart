@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../constants.dart';
 
-class BottomContainer extends StatelessWidget {
+class CFWidget extends StatelessWidget {
   final String image;
   final String name;
   final int price;
   final String description;
   final Function onTap;
-  BottomContainer(
+  CFWidget(
       {@required this.onTap,
       @required this.image,
       @required this.price,

@@ -16,6 +16,4 @@ class Coffee {
     this.quantity,
     this.idUser,
   });
-
-  toLowerCase() {}
 }

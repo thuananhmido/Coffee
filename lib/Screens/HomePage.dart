@@ -5,7 +5,7 @@ import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
 import 'package:CoffeeAppUI/Screens//Cart.dart';
-import 'package:CoffeeAppUI/widgets/bottom_Container.dart';
+import 'package:CoffeeAppUI/widgets/cf_Widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                               mainAxisSpacing: 20,
                               children: singleFoodList
                                   .map(
-                                    (e) => BottomContainer(
+                                    (e) => CFWidget(
                                       onTap: () {
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
