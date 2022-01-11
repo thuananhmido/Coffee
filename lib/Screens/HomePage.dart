@@ -1,5 +1,7 @@
+import 'package:CoffeeAppUI/Screens/Aboutme.dart';
 import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
 import 'package:CoffeeAppUI/Screens/Profile.dart';
+import 'package:CoffeeAppUI/Screens/SearchCF.dart';
 import 'package:CoffeeAppUI/Screens/SearchCF.dart';
 import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(''),
+                    image: AssetImage('assets/images/bg_cf.jpg'),
                   ),
                 ),
                 currentAccountPicture: CircleAvatar(
@@ -81,10 +83,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 accountName: Text("${user.displayName}"),
                 accountEmail: Text("${user.email}"),
-              ),
-              Divider(
-                thickness: 2,
-                color: Colors.white,
               ),
               Column(children: [
                 ListTile(
@@ -97,10 +95,28 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
+                Divider(
+                  thickness: 2,
+                  color: Colors.white,
+                ),
                 ListTile(
                   leading: Icon(Icons.logout),
                   title: Text(" Đăng Xuất"),
                   onTap: () => signOut(),
+                ),
+                Divider(
+                  thickness: 2,
+                  color: Colors.white,
+                ),
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text(" About me"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AboutMe()),
+                    );
+                  },
                 ),
               ]),
             ],

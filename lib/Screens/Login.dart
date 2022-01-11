@@ -107,7 +107,7 @@ class _LoginState extends State<Login> {
             Container(
               height: 400,
               child: Image(
-                image: AssetImage("assets/images/welcome.jpg"),
+                image: AssetImage("assets/images/banner.jpg"),
                 fit: BoxFit.contain,
               ),
             ),

@@ -12,7 +12,7 @@ class _SignUpState extends State<SignUp> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _name, _email, _password, _address;
+  String _name, _email, _password, _address, _sdt;
 
   checkAuthentication() async {
     _auth.authStateChanges().listen((user) async {
@@ -43,6 +43,7 @@ class _SignUpState extends State<SignUp> {
           "password": _password,
           "id": user.user.uid,
           "address": _address,
+          "sdt": _sdt,
         };
         _fireStore.setData(students).whenComplete(() {
           print("$_name created");
@@ -85,7 +86,7 @@ class _SignUpState extends State<SignUp> {
             Container(
               height: 400,
               child: Image(
-                image: AssetImage("assets/images/login.jpg"),
+                image: AssetImage("assets/images/banner.jpg"),
                 fit: BoxFit.contain,
               ),
             ),
@@ -138,6 +139,17 @@ class _SignUpState extends State<SignUp> {
                             prefixIcon: Icon(Icons.person),
                           ),
                           onSaved: (input) => _address = input),
+                    ),
+                    Container(
+                      child: TextFormField(
+                          validator: (input) {
+                            if (input.isEmpty) return 'sdt';
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'SĐT',
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          onSaved: (input) => _sdt = input),
                     ),
                     SizedBox(height: 20),
                     RaisedButton(

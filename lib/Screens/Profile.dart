@@ -18,16 +18,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _name, _email, _password, _address, _docId;
+  String _name, _email, _password, _address, _docId, _sdt;
   update() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       updatepass() {
         final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
         User currentUser1 = firebaseAuth.currentUser;
-        currentUser1.updatePassword("$_password").catchError((err) {
-          // An error has occured.
-        });
+        currentUser1.updatePassword("$_password").catchError((err) {});
       }
 
       try {
@@ -35,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Firestore.instance.collection('users').document(currentUser());
         Map<String, dynamic> students = {
           "userName": _name,
-          // "email": _email,
+          "sdt": _sdt,
           "address": _address,
           "password": _password,
           "id": currentUser(),
@@ -178,33 +176,33 @@ class _ProfilePageState extends State<ProfilePage> {
                         margin: new EdgeInsets.only(left: 30.0, right: 30.0),
                       ),
 
-                      // About me
-                      // new Container(
-                      //   child: new Text(
-                      //     'Email',
-                      //     style: new TextStyle(
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: 18.0,
-                      //         color: kPrimaryColor),
-                      //   ),
-                      //   margin: new EdgeInsets.only(
-                      //       left: 10.0, top: 30.0, bottom: 5.0),
-                      // ),
-                      // new Container(
-                      //   child: new TextFormField(
-                      //     validator: (input) {
-                      //       if (input.isEmpty) return document['email'];
-                      //     },
-                      //     decoration: new InputDecoration(
-                      //         hintText: document['email'],
-                      //         border: new UnderlineInputBorder(),
-                      //         contentPadding: new EdgeInsets.all(5.0),
-                      //         hintStyle: new TextStyle(color: Colors.grey)),
-                      //     onSaved: (input) => _email = input,
-                      //     keyboardType: TextInputType.number,
-                      //   ),
-                      //   margin: new EdgeInsets.only(left: 30.0, right: 30.0),
-                      // ),
+                      //About me
+                      new Container(
+                        child: new Text(
+                          'SDT',
+                          style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: kPrimaryColor),
+                        ),
+                        margin: new EdgeInsets.only(
+                            left: 10.0, top: 30.0, bottom: 5.0),
+                      ),
+                      new Container(
+                        child: new TextFormField(
+                          validator: (input) {
+                            if (input.isEmpty) return document['sdt'];
+                          },
+                          decoration: new InputDecoration(
+                              hintText: document['sdt'],
+                              border: new UnderlineInputBorder(),
+                              contentPadding: new EdgeInsets.all(5.0),
+                              hintStyle: new TextStyle(color: Colors.grey)),
+                          onSaved: (input) => _sdt = input,
+                          keyboardType: TextInputType.number,
+                        ),
+                        margin: new EdgeInsets.only(left: 30.0, right: 30.0),
+                      ),
                       Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(

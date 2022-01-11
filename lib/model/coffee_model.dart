@@ -6,6 +6,7 @@ class Coffee {
   int quantity;
   String idUser;
   String switchvalue;
+  int pricesp;
 
   Coffee({
     this.switchvalue,
@@ -15,5 +16,6 @@ class Coffee {
     this.price,
     this.quantity,
     this.idUser,
+    this.pricesp,
   });
 }

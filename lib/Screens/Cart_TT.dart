@@ -16,6 +16,7 @@ class CartPage extends StatelessWidget {
     @required int quantity,
     @required int id,
     @required String switchvalue,
+    @required int pricesp,
   }) {
     return Row(
       children: [
@@ -56,6 +57,19 @@ class CartPage extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: "x $quantity x $switchvalue ",
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Text.rich(
+                TextSpan(
+                  text: "Tổng :",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: kPrimaryColor),
+                  children: [
+                    TextSpan(
+                      text: "$pricesp\k",
                     ),
                   ],
                 ),
@@ -151,6 +165,7 @@ class CartPage extends StatelessWidget {
             price: provider.cartList[index].price,
             quantity: provider.cartList[index].quantity,
             switchvalue: provider.cartList[index].switchvalue,
+            pricesp: provider.cartList[index].pricesp,
           );
         },
       ),

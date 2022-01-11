@@ -49,6 +49,7 @@ class CFProvider extends ChangeNotifier {
     @required int price,
     @required int quantity,
     @required String switchvalue,
+    @required int pricesp,
   }) {
     CartModle = Coffee(
       image: image,
@@ -77,6 +78,7 @@ class CFProvider extends ChangeNotifier {
       "quantity": quantity,
       "idUser": currentUser(),
       "switchvalue": switchvalue,
+      "pricesp": pricesp,
     };
     _fireStore.setData(students).whenComplete(() {
       print("$name created");

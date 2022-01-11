@@ -21,6 +21,7 @@ class CartProvider extends ChangeNotifier {
           price: element.data()['price'],
           quantity: element.data()['quantity'],
           switchvalue: element.data()['switchvalue'],
+          pricesp: element.data()['pricesp'],
         );
         newCartList.add(cartModle);
       },
@@ -37,7 +38,7 @@ class CartProvider extends ChangeNotifier {
   int totalprice() {
     int total = 0;
     cartList.forEach((element) {
-      total += element.price * element.quantity;
+      total += element.pricesp;
     });
     return total;
   }

@@ -36,6 +36,28 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
+//lay price cong vao
+  getSize() {
+    if (switchvalue == true) {
+      var a = (widget.price + 5) * quantity;
+      return a;
+    } else {
+      var b = (widget.price * quantity);
+      return b;
+    }
+  }
+
+//lay price in ra
+  getSizeString() {
+    if (switchvalue == true) {
+      var a = (widget.price + 5) * quantity;
+      return "$a";
+    } else {
+      var b = (widget.price * quantity);
+      return "$b";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     CFProvider provider = Provider.of<CFProvider>(context);
@@ -140,7 +162,7 @@ class _DetailPageState extends State<DetailPage> {
                         ],
                       ),
                       Text(
-                        "\$${widget.price * quantity}",
+                        getSizeString(),
                         style: TextStyle(color: Colors.white, fontSize: 30),
                       )
                     ],
@@ -197,6 +219,7 @@ class _DetailPageState extends State<DetailPage> {
                           price: widget.price,
                           quantity: quantity,
                           switchvalue: getSW(),
+                          pricesp: getSize(),
                         );
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
