@@ -16,13 +16,13 @@ class CartProvider extends ChangeNotifier {
     querySnapshot.docs.forEach(
       (element) {
         cartModle = Coffee(
-          name: element.data()['name'],
-          image: element.data()['image'],
-          price: element.data()['price'],
-          quantity: element.data()['quantity'],
-          switchvalue: element.data()['switchvalue'],
-          pricesp: element.data()['pricesp'],
-        );
+            name: element.data()['name'],
+            image: element.data()['image'],
+            price: element.data()['price'],
+            quantity: element.data()['quantity'],
+            switchvalue: element.data()['switchvalue'],
+            pricesp: element.data()['pricesp'],
+            id: element.data()['id']);
         newCartList.add(cartModle);
       },
     );
@@ -52,10 +52,10 @@ class CartProvider extends ChangeNotifier {
 //    db.collection("students").document(doc.documentID).delete();
 //    clearForm();
 // }
-  Future<void> delete(namedelete) async {
+  Future<void> delete(iddelete) async {
     cartList.removeAt(deleteIndex);
     notifyListeners();
-    FirebaseFirestore.instance.collection('data').doc(namedelete).delete();
+    FirebaseFirestore.instance.collection('data').doc(iddelete).delete();
   }
 }
 

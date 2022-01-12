@@ -70,7 +70,7 @@ class CFProvider extends ChangeNotifier {
     //   debugPrint(document.documentID);
     // });
     DocumentReference _fireStore =
-        Firestore.instance.collection('data').document(name);
+        Firestore.instance.collection('data').document();
     Map<String, dynamic> students = {
       "name": name,
       "price": price,
@@ -79,6 +79,7 @@ class CFProvider extends ChangeNotifier {
       "idUser": currentUser(),
       "switchvalue": switchvalue,
       "pricesp": pricesp,
+      "id": _fireStore.id
     };
     _fireStore.setData(students).whenComplete(() {
       print("$name created");
@@ -91,13 +92,13 @@ class CFProvider extends ChangeNotifier {
     return cartList;
   }
 
-  int totalprice() {
-    int total = 0;
-    cartList.forEach((element) {
-      total += element.price * element.quantity;
-    });
-    return total;
-  }
+  // int totalprice() {
+  //   int total = 0;
+  //   cartList.forEach((element) {
+  //     total += element.price * element.quantity;
+  //   });
+  //   return total;
+  // }
 
   int deleteIndex;
   void getDeleteIndex(int index) {

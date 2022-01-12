@@ -157,8 +157,8 @@ class CartPage extends StatelessWidget {
           provider.getDeleteIndex(index);
           return cartItem(
             onTap: () {
-              String namedelete = provider.cartList[index].name;
-              provider.delete(namedelete);
+              String iddelete = provider.cartList[index].id;
+              provider.delete(iddelete);
             },
             image: provider.cartList[index].image,
             name: provider.cartList[index].name,
