@@ -1,4 +1,6 @@
+import 'package:CoffeeAppUI/Screens/Cart.dart';
 import 'package:CoffeeAppUI/Screens/HomePage.dart';
+import 'package:CoffeeAppUI/Screens/Profile.dart';
 import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
 import 'package:CoffeeAppUI/provider/cart_provider.dart';
@@ -19,63 +21,6 @@ class _ProfilePageState extends State<CheckOut> {
     final User user = _firebaseAuth.currentUser;
     final uid = user.uid.toString();
     return uid;
-  }
-
-  Widget cartItem({
-    @required String image,
-    @required String name,
-    @required int price,
-    @required int quantity,
-    @required int id,
-  }) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 88,
-          child: AspectRatio(
-            aspectRatio: 0.88,
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Color(0xFFF5F6F9),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(image),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 20),
-        Container(
-          width: 100,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                name,
-                style: TextStyle(color: Colors.black, fontSize: 16),
-                maxLines: 2,
-              ),
-              SizedBox(height: 10),
-              Text.rich(
-                TextSpan(
-                  text: "\$$price",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, color: kPrimaryColor),
-                  children: [
-                    TextSpan(
-                      text: " x$quantity",
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   @override
@@ -134,6 +79,13 @@ class _ProfilePageState extends State<CheckOut> {
         ),
         appBar: AppBar(
           title: Text(" Xác nhận đặt hàng"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => CartPage()));
+            },
+          ),
         ),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
@@ -153,6 +105,7 @@ class _ProfilePageState extends State<CheckOut> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                        SizedBox(height: 10),
                         Text(
                           'THÔNG TIN KHÁCH HÀNG',
                           style: TextStyle(
@@ -167,11 +120,14 @@ class _ProfilePageState extends State<CheckOut> {
                           child: Row(
                             children: [
                               SizedBox(
-                                width: 150,
-                                child: Text(" Tên Người Nhận ",
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1),
-                              ),
+                                  width: 150,
+                                  child: Text(
+                                    " Tên Người Nhận ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                    ),
+                                  )),
                               Expanded(child: Text(document['userName']))
                             ],
                           ),
@@ -182,9 +138,13 @@ class _ProfilePageState extends State<CheckOut> {
                             children: [
                               SizedBox(
                                 width: 100,
-                                child: Text(" Địa Chỉ  ",
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1),
+                                child: Text(
+                                  " Địa Chỉ  ",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
                               Expanded(child: Text(document['address']))
                             ],
@@ -195,28 +155,31 @@ class _ProfilePageState extends State<CheckOut> {
                           child: Row(
                             children: [
                               SizedBox(
-                                width: 100,
-                                child: Text(" Số Diện Thoại  ",
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1),
+                                width: 150,
+                                child: Text(
+                                  " Số Diện Thoại  ",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
-                              Expanded(child: Text(document['email']))
+                              Expanded(child: Text(document['sdt']))
                             ],
                           ),
                         ),
-                        // Container(
-                        //   child: ListView.builder(
-                        //     itemCount: provider.cartList.length,
-                        //     itemBuilder: (ctx, index) {
-                        //       return cartItem(
-                        //         image: provider.cartList[index].image,
-                        //         name: provider.cartList[index].name,
-                        //         price: provider.cartList[index].price,
-                        //         quantity: provider.cartList[index].quantity,
-                        //       );
-                        //     },
-                        //   ),
-                        // )
+                        GestureDetector(
+                          child: Text(
+                            'Thay đổi địa chỉ giao hàng',
+                            style:
+                                TextStyle(color: kPrimaryColor, fontSize: 17),
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => ProfilePage()));
+                          },
+                        )
                       ]));
                 }).toList(),
               );

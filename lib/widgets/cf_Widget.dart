@@ -61,7 +61,7 @@ class CFWidget extends StatelessWidget {
               child: Hero(
                 tag: image,
                 child: CircleAvatar(
-                  radius: 60,
+                  radius: 100,
                   backgroundImage: NetworkImage(image),
                 ),
               ),

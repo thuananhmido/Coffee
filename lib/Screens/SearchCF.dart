@@ -1,4 +1,4 @@
-import 'package:CoffeeAppUI/Screens/Cart.dart';
+import 'package:CoffeeAppUI/Screens/DetailPage.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:flutter/material.dart';

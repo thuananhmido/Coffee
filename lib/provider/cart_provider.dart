@@ -48,10 +48,6 @@ class CartProvider extends ChangeNotifier {
     deleteIndex = index;
   }
 
-// Future<void> deleteStudent(DocumentSnapshot doc) async {
-//    db.collection("students").document(doc.documentID).delete();
-//    clearForm();
-// }
   Future<void> delete(iddelete) async {
     cartList.removeAt(deleteIndex);
     notifyListeners();

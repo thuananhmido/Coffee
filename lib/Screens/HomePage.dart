@@ -1,12 +1,11 @@
 import 'package:CoffeeAppUI/Screens/Aboutme.dart';
-import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
+import 'package:CoffeeAppUI/Screens/Cart.dart';
+import 'package:CoffeeAppUI/Screens/DetailPage.dart';
 import 'package:CoffeeAppUI/Screens/Profile.dart';
-import 'package:CoffeeAppUI/Screens/SearchCF.dart';
 import 'package:CoffeeAppUI/Screens/SearchCF.dart';
 import 'package:CoffeeAppUI/constants.dart';
 import 'package:CoffeeAppUI/provider/cf_provider.dart';
 import 'package:CoffeeAppUI/model/coffee_model.dart';
-import 'package:CoffeeAppUI/Screens//Cart.dart';
 import 'package:CoffeeAppUI/widgets/cf_Widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,15 +59,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     CFProvider provider = Provider.of<CFProvider>(context);
-
-    //////////////single food list/////////
     provider.getCFList();
     singleFoodList = provider.throwCFList;
     return Scaffold(
         drawer: Drawer(
           backgroundColor: kPrimaryLightColor,
           child: ListView(
-            // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
@@ -79,7 +75,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/logo.jpg'),
+                  radius: 100,
+                  backgroundImage: NetworkImage(
+                      'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg'),
                 ),
                 accountName: Text("${user.displayName}"),
                 accountEmail: Text("${user.email}"),
@@ -87,7 +85,7 @@ class _HomePageState extends State<HomePage> {
               Column(children: [
                 ListTile(
                   leading: Icon(Icons.contacts),
-                  title: Text(" Profile"),
+                  title: Text(" Thông Tin Cá Nhân"),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -109,8 +107,8 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
                 ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text(" About me"),
+                  leading: Icon(Icons.settings),
+                  title: Text("Về Ứng Dụng"),
                   onTap: () {
                     Navigator.push(
                       context,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -14,12 +15,11 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _email, _password;
-
+  final usersRef = FirebaseFirestore.instance.collection('users');
   checkAuthentification() async {
     _auth.authStateChanges().listen((user) {
       if (user != null) {
         print(user);
-
         Navigator.pushReplacementNamed(context, "/");
       }
     });
@@ -34,7 +34,6 @@ class _LoginState extends State<Login> {
   login() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-
       try {
         await _auth.signInWithEmailAndPassword(
             email: _email, password: _password);
@@ -72,29 +71,6 @@ class _LoginState extends State<Login> {
 
   navigateToSignUp() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
-  }
-
-  Future<UserCredential> googleSignIn() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-    GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    if (googleUser != null) {
-      GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      if (googleAuth.idToken != null && googleAuth.accessToken != null) {
-        final AuthCredential credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
-        final UserCredential user =
-            await _auth.signInWithCredential(credential);
-
-        await Navigator.pushReplacementNamed(context, "/");
-
-        return user;
-      } else {
-        throw StateError('Missing Google Auth Token');
-      }
-    } else
-      throw StateError('Sign in Aborted');
   }
 
   @override
@@ -153,9 +129,6 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    SizedBox(height: 20.0),
-                    SignInButton(Buttons.Google,
-                        text: "Sign up with Google", onPressed: googleSignIn)
                   ],
                 ),
               ),

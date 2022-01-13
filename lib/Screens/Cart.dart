@@ -1,258 +1,171 @@
-import 'package:CoffeeAppUI/Screens/Cart_TT.dart';
+import 'package:CoffeeAppUI/Screens/Checkout.dart';
+import 'package:CoffeeAppUI/Screens/DetailPage.dart';
+import 'package:CoffeeAppUI/Screens/HomePage.dart';
 import 'package:CoffeeAppUI/constants.dart';
-import 'package:CoffeeAppUI/provider/cf_provider.dart';
-import 'package:CoffeeAppUI/Screens//HomePage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:CoffeeAppUI/model/coffee_model.dart';
+import 'package:CoffeeAppUI/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DetailPage extends StatefulWidget {
-  final String image;
-  final int price;
-  final String name;
-  final String description;
-  final String idUser;
-  DetailPage({
-    @required this.image,
-    @required this.name,
-    @required this.idUser,
-    @required this.price,
-    @required this.description,
-  });
-
+class CartPage extends StatelessWidget {
   @override
-  _DetailPageState createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  int quantity = 1;
-  bool switchvalue = true;
-  getSW() {
-    if (switchvalue == true) {
-      return "L";
-    } else {
-      return "S";
-    }
-  }
-
-//lay price cong vao
-  getSize() {
-    if (switchvalue == true) {
-      var a = (widget.price + 5) * quantity;
-      return a;
-    } else {
-      var b = (widget.price * quantity);
-      return b;
-    }
-  }
-
-//lay price in ra
-  getSizeString() {
-    if (switchvalue == true) {
-      var a = (widget.price + 5) * quantity;
-      return "$a";
-    } else {
-      var b = (widget.price * quantity);
-      return "$b";
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    CFProvider provider = Provider.of<CFProvider>(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+  Widget cartItem({
+    @required String image,
+    @required String name,
+    @required int price,
+    @required Function onTap,
+    @required int quantity,
+    @required int id,
+    @required String switchvalue,
+    @required int pricesp,
+  }) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 88,
+          child: AspectRatio(
+            aspectRatio: 0.88,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Color(0xFFF5F6F9),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(image),
+              ),
+            ),
           ),
+        ),
+        SizedBox(width: 20),
+        Container(
+          width: 100,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                "$name",
+                style: TextStyle(color: Colors.black, fontSize: 16),
+                maxLines: 2,
+              ),
+              SizedBox(height: 10),
+              Text.rich(
+                TextSpan(
+                  text: "\$$price",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: kPrimaryColor),
+                  children: [
+                    TextSpan(
+                      text: "x $quantity x $switchvalue ",
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Text.rich(
+                TextSpan(
+                  text: "Tổng :",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: kPrimaryColor),
+                  children: [
+                    TextSpan(
+                      text: "$pricesp\k",
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 130),
+        IconButton(
+          icon: Icon(Icons.close, color: Colors.black),
+          onPressed: onTap,
+        )
+      ],
+    );
+  }
+
+  Widget build(BuildContext context) {
+    CartProvider provider = Provider.of<CartProvider>(context);
+    int total = provider.totalprice();
+    provider.getCartList();
+    List<Coffee> singleFoodList = [];
+    singleFoodList = provider.throwCFList;
+    return Scaffold(
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        height: 65,
+        decoration: BoxDecoration(
+            color: kPrimaryLightColor, borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              " $total\VNĐ",
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+            RaisedButton(
+              color: kPrimaryColor,
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => CheckOut(),
+                  ),
+                );
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Tiếp Tục ",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        title: Text("Giỏ Hàng"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              child: CircleAvatar(
-                radius: 110,
-                backgroundImage: NetworkImage(widget.image),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: kPrimaryColor.withOpacity(0.3),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.name,
-                    style: TextStyle(fontSize: 40, color: Color(0xFFFF7643)),
-                  ),
-                  Text(
-                    "Coffee Mido Cảm Ơn Qúy Khách",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (quantity > 1) quantity--;
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Icon(Icons.remove),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            '$quantity',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                quantity++;
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Icon(
-                                Icons.add,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        getSizeString(),
-                        style: TextStyle(color: Colors.white, fontSize: 30),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "S",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 40,
-                        ),
-                      ),
-                      CupertinoSwitch(
-                        trackColor: Colors.black,
-                        value: switchvalue,
-                        activeColor: Colors.red,
-                        onChanged: (value) {
-                          setState(() {
-                            switchvalue = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        "L",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 40,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "Review ",
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    widget.description,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Container(
-                    height: 55,
-                    width: double.infinity,
-                    child: RaisedButton(
-                      color: Color(0xFFFF7643),
-                      onPressed: () {
-                        provider.addToCart(
-                          image: widget.image,
-                          name: widget.name,
-                          price: widget.price,
-                          quantity: quantity,
-                          switchvalue: getSW(),
-                          pricesp: getSize(),
-                        );
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => CartPage(),
-                          ),
-                        );
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Thêm giỏ hàng",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
+      body: ListView.builder(
+        itemCount: provider.cartList.length,
+        itemBuilder: (ctx, index) {
+          provider.getDeleteIndex(index);
+          return cartItem(
+            onTap: () {
+              String iddelete = provider.cartList[index].id;
+              provider.delete(iddelete);
+            },
+            image: provider.cartList[index].image,
+            name: provider.cartList[index].name,
+            price: provider.cartList[index].price,
+            quantity: provider.cartList[index].quantity,
+            switchvalue: provider.cartList[index].switchvalue,
+            pricesp: provider.cartList[index].pricesp,
+          );
+        },
       ),
     );
   }

@@ -5,20 +5,20 @@ import 'package:CoffeeAppUI/model/coffee_model.dart';
 
 class CFProvider extends ChangeNotifier {
   List<Coffee> cfList = [];
-  Coffee foodModle;
+  Coffee cfModle;
   Future<void> getCFList() async {
     List<Coffee> newCFList = [];
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('coffee').get();
     querySnapshot.docs.forEach(
       (element) {
-        foodModle = Coffee(
+        cfModle = Coffee(
           name: element.data()['name'],
           image: element.data()['image'],
           price: element.data()['price'],
           description: element.data()['description'],
         );
-        newCFList.add(foodModle);
+        newCFList.add(cfModle);
       },
     );
 
@@ -100,13 +100,13 @@ class CFProvider extends ChangeNotifier {
   //   return total;
   // }
 
-  int deleteIndex;
-  void getDeleteIndex(int index) {
-    deleteIndex = index;
-  }
+  // int deleteIndex;
+  // void getDeleteIndex(int index) {
+  //   deleteIndex = index;
+  // }
 
-  void delete() {
-    cartList.removeAt(deleteIndex);
-    notifyListeners();
-  }
+  // void delete() {
+  //   cartList.removeAt(deleteIndex);
+  //   notifyListeners();
+  // }
 }
